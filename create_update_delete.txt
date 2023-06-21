@@ -1,0 +1,13 @@
+	username=request.POST['username']
+	#to create row in table
+	user=info.objects.create(name=username)
+	#to save changes
+	user.save()
+#to delete table data
+user=info.objects.filter(name=username)
+user.delete()
+
+
+#update
+user=info.objects.filter(id=4).update(name=username)
+

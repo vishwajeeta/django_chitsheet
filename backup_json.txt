@@ -1,0 +1,6 @@
+cmd>python manage.py dumpdata app1 > myapp.json #select only one app
+cmd>python manage.py dumpdata > myapp.json #select entire prodect
+#to restore the data
+cmd>python manage.py loaddata myapp.json
+#myapp.json has the dackup data
+#above command will restore the data

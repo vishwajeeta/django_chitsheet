@@ -1,0 +1,54 @@
+# views.py
+from django.contrib.auth.forms import UserCreationForm
+
+def home(request):
+    form=UserCreationForm()
+    return render(request,'index1.html',{'form':form})
+
+# index.html
+<!DOCTYPE html>
+<head>
+<title>regestration page</title>
+</head>
+<body>
+
+{{form.as_ul}}
+
+</body>
+</html>
+
+********************************************************************************
+
+# views.py
+if request.method == 'GET':
+        
+        form= UserCreationForm()
+        context={
+            "form":form
+        }
+        return render(request,'regester.html',context=context)
+
+    else:
+        print(request.POST)
+        form= UserCreationForm(request.POST)
+        if form.is_valid():
+            return HttpResponse('form is submited sucessfully ')
+        else:
+            return HttpResponse('form is invallid')
+    
+
+# index.html
+<!DOCTYPE html>
+<head>
+<title>regestration page</title>
+</head>
+<body>
+    <form action="/regester/" method="post">
+        {% csrf_token %}
+        {{form.as_ul}}
+        <hr>
+        <input type="submit" value="Create Accout" class="btn btn-success">
+    </form>
+
+</body>
+</html>

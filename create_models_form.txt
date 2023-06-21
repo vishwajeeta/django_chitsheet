@@ -1,0 +1,92 @@
+#forms.py
+from django.forms import ModelForm
+from .models import order
+
+
+class orderForm(ModelForm):
+    class Meta:
+        model=order
+        fields='__all__'
+-----------------------------------------------------------------------------------------------------
+#views.py
+from django.shortcuts import render,redirect
+from .models import order
+from .forms import orderForm
+# Create your views here.
+def home(request):
+    data=order.objects.all()
+    return render(request,'home.html',{'data':data})
+def create_order(request):
+    form=orderForm()
+    if request.method=='POST':
+        form=orderForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context={'form':form}
+    return render(request,'order_form.html',context)
+
+def update_order(request,pk):
+    orders=order.objects.get(id=pk)
+    form=orderForm(instance=orders)
+    if request.method=='POST':
+        form=orderForm(request.POST,instance=orders)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context={'form':form}
+    return render(request,'update_form.html',context)
+
+def delete_order(request,pk):
+    orders=order.objects.get(id=pk)
+    if request.method=='POST':
+        orders.delete()
+        return redirect('home')
+    context={'item':orders}
+    return render(request,'delete.html',context)
+----------------------------------------------------------------------------------------------------
+
+#delete.html
+<p>Are you soure you want to delete {{item}}</p>
+    <form action="{% url 'delete_order' item.id %}" method="post">
+        {% csrf_token %}
+        <a href="{% url 'home' %}">cancel</a>
+        <input type="submit" name="conform">
+    </form>
+    
+
+#home.html
+<a href="{% url 'create_order'%}">create</a><br>
+    {% for data in data%}
+    <a href="{% url 'delete_order' data.id %}">delete</a>
+    {{data.name}}
+    <a href="{% url 'update_order' data.id %}">update</a><br>
+    {% endfor %}
+    
+
+#update_form.html
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit">
+    </form>
+
+#order_form.html
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit">
+    </form>
+
+======================================================================
+#url.py
+from django.urls import path
+from . import views
+urlpatterns=[
+    path('',views.home,name='home'),
+    path('create_order',views.create_order,name='create_order'),
+    path('update_order/<str:pk>/',views.update_order,name='update_order'),
+    path('delete_order/<str:pk>/',views.delete_order,name='delete_order')
+]

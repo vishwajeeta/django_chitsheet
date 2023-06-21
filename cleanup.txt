@@ -1,0 +1,19 @@
+#delete image from file if its deleted form database
+>pip install django
+>pip install pillow
+>django-admin startproject password_management
+
+#delete image automatically
+>pip install django-cleanup
+INSTALLED_APPS=[
+'django_cleanup.apps.CleanupConfig',
+]
+#>/models.py
+from django.cleanup import cleanup
+#ignoure cleanup for specific Model
+@cleanup.ignore
+#only creanup selected model
+@cleanup.select
+
+Note:- if ignore is not defined it will run on every models
+

@@ -1,0 +1,5 @@
+#urls.py
+path('',views.home,name='home-page'),
+
+#index.html
+<a href="{% url 'home-page' %}">

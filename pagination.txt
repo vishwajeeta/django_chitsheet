@@ -1,0 +1,20 @@
+#pagination in django
+from django.core.paginator import Paginator
+
+def list_venues(request):
+    p=Paginator(diary.objects.all(), 2)
+    page=request.GET.get('page')
+    venues=p.get_page(page)
+    return render(request,'index.html',{'venues':venues})
+
+#index.html
+<br>
+{{venues}}<br/>
+has previous:{{ venues.has_previous}}<br/>
+has Next:{{venues.has_next }}
+current page:{{venues.number}}<br/>
+Number of pages:{{
+venues.paginator.num_pages}}<br/>
+{% if venues.has_previous %}
+<a href="?page=1">&laquo First</a>
+<a href="?page={{ venues.previous_page_number}}">&laquo </a>

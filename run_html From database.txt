@@ -1,0 +1,7 @@
+
+    {% for data in data %}
+    {{data.head |safe}}
+    
+    {{data.information |safe}}
+
+    {% endfor %}

@@ -1,0 +1,74 @@
+mysql> create database my_database;
+mysql> show databases;
+
+(setting.py)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'my_database',
+        'USER': 'root',
+        'PASSWORD': 'golu',
+        'PORT': '3306',
+        'OPTIONS':{
+            'init_command':"SET sql_mode = STRICT_TRANS_TABLES"
+        }
+    }
+}
+
+
+
+
+
+
+cmd>pip install mysqlclient
+cmd>python manage.py migrate
+cmd>python manage.py startapp data
+#models.py
+
+
+class Destination(models.Model):
+    name=models.CharField(max_length=100)
+    amount=models.IntegerField(10)
+    # to show data in admin pannel
+    def __str__(self):
+        return f'{self.name}-{self.account}'
+
+#setting.py
+
+INSTALLED_APPS = [
+    'data',
+
+
+#admin.py
+
+from django.contrib import admin
+from .models import Product
+
+#to view data in table formate
+class ProductAdmin(admin.ModelAdmin):
+    list_display= ('name','quantity')
+
+# Register your models here.
+admin.site.register(Product,ProductAdmin)
+
+# to changoe admin title
+admin.site.site_header = 'vishwa'
+
+
+cmd>python manage.py makemigrations
+#pip install pillow #for images files uploard
+cmd>python manage.py migrate
+mysql>use my_database;
+mysql>select *from data_destination
+cmd>python manage.py createsuperuser
+
+
+
+# to add orderby in database formate
+#views.py
+data=diarydata.objects.order_by('content')# to view data in order
+data=diarydata.objects.filter(content='hello')#to select only one data
+#data=diarydata.objects.filter(content='hello').delete()# to delecte the table
+
+

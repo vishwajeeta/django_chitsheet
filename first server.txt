@@ -1,0 +1,30 @@
+#ajay.py
+from pickle import GET
+from django.http import HttpResponse
+from django.shortcuts import render
+
+def a(request):
+    return render(request,'index.html')
+    #return HttpResponse("hello world")
+
+def b(request):
+    retu=request.GET.get('text','default')
+    print(retu)
+    return HttpResponse("<a href='/'>done</a>")
+   
+
+#index.html #in another folder which is linked with django ajay.py
+
+<!DOCTYPE html>
+
+<head>
+    <title>my first project</title>
+</head>
+<body>
+    <h1>hello sir</h1>
+<form action="done" method="get" >
+    <textarea name="text" ></textarea>
+    <button type="submit">submit</button>
+</form>
+</body>
+</html>
